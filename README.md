@@ -6,6 +6,10 @@ It provides detailed information of every state and union territory in form of b
 
 The extension badge displays the total confirmed cases of COVID-19 in India.
 
+### Version 0.0.2
+
+Fixed Theme Reset when Browser Restarts Bug
+
 ### Version 0.0.1
 
 First publish of the extension.
