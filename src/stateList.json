@@ -1,0 +1,156 @@
+{
+	"stateList": [
+		{
+			"state": "All States",
+			"stateCode": "TT"
+		},
+		{
+			"state": "Andaman and Nicobar Islands",
+			"stateCode": "AN"
+		},
+		{
+			"state": "Andhra Pradesh",
+			"stateCode": "AP"
+		},
+		{
+			"state": "Arunachal Pradesh",
+			"stateCode": "AR"
+		},
+		{
+			"state": "Assam",
+			"stateCode": "AS"
+		},
+		{
+			"state": "Bihar",
+			"stateCode": "BR"
+		},
+		{
+			"state": "Chandigarh",
+			"stateCode": "CH"
+		},
+		{
+			"state": "Chhattisgarh",
+			"stateCode": "CT"
+		},
+		{
+			"state": "Dadra and Nagar Haveli and Daman and Diu",
+			"stateCode": "DN"
+		},
+		{
+			"state": "Delhi",
+			"stateCode": "DL"
+		},
+		{
+			"state": "Goa",
+			"stateCode": "GA"
+		},
+		{
+			"state": "Gujarat",
+			"stateCode": "GJ"
+		},
+		{
+			"state": "Haryana",
+			"stateCode": "HR"
+		},
+		{
+			"state": "Himachal Pradesh",
+			"stateCode": "HP"
+		},
+		{
+			"state": "Jammu and Kashmir",
+			"stateCode": "JK"
+		},
+		{
+			"state": "Jharkhand",
+			"stateCode": "JH"
+		},
+		{
+			"state": "Karnataka",
+			"stateCode": "KA"
+		},
+		{
+			"state": "Kerala",
+			"stateCode": "KL"
+		},
+		{
+			"state": "Ladakh",
+			"stateCode": "LA"
+		},
+		{
+			"state": "Lakshadweep",
+			"stateCode": "LD"
+		},
+		{
+			"state": "Madhya Pradesh",
+			"stateCode": "MP"
+		},
+		{
+			"state": "Maharashtra",
+			"stateCode": "MH"
+		},
+		{
+			"state": "Manipur",
+			"stateCode": "MN"
+		},
+		{
+			"state": "Meghalaya",
+			"stateCode": "ML"
+		},
+		{
+			"state": "Mizoram",
+			"stateCode": "MZ"
+		},
+		{
+			"state": "Nagaland",
+			"stateCode": "NL"
+		},
+		{
+			"state": "Odisha",
+			"stateCode": "OR"
+		},
+		{
+			"state": "Puducherry",
+			"stateCode": "PY"
+		},
+		{
+			"state": "Punjab",
+			"stateCode": "PB"
+		},
+		{
+			"state": "Rajasthan",
+			"stateCode": "RJ"
+		},
+		{
+			"state": "Sikkim",
+			"stateCode": "SK"
+		},
+		{
+			"state": "State Unassigned",
+			"stateCode": "UN"
+		},
+		{
+			"state": "Tamil Nadu",
+			"stateCode": "TN"
+		},
+		{
+			"state": "Telangana",
+			"stateCode": "TG"
+		},
+		{
+			"state": "Tripura",
+			"stateCode": "TR"
+		},
+		{
+			"state": "Uttar Pradesh",
+			"stateCode": "UP"
+		},
+		{
+			"state": "Uttarakhand",
+			"stateCode": "UT"
+		},
+		{
+			"state": "West Bengal",
+			"stateCode": "WB"
+		}
+	]
+}
