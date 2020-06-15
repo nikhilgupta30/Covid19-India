@@ -131,6 +131,24 @@ const storeDefaultTheme = () => {
 	});
 };
 
+const storeDefaultSettings = () => {
+	chrome.storage.local.get(['Settings'], function (response) {
+		console.log(response.Settings);
+		if (response.Settings === void 0) {
+			const defaultSettings = {
+				DataTypeOnBadge: 'Confirmed',
+				ValueToShow: 'Total Value',
+				DefaultColumnToSort: 'Confirmed',
+				DefaultSortType: 'Descending',
+				DefaultGraphDuration: 'Two Weeks',
+			};
+			chrome.storage.local.set({ Theme: defaultSettings }, () => {
+				console.log('Default Settings stored in Local Storage');
+			});
+		}
+	});
+};
+
 // Creating Alarm
 chrome.alarms.create('FetchData', {
 	delayInMinutes: 5,
@@ -142,6 +160,7 @@ chrome.browserAction.setBadgeBackgroundColor({ color: '#e40021' });
 
 fetchData();
 storeDefaultTheme();
+storeDefaultSettings();
 chrome.alarms.onAlarm.addListener(function (alarm) {
 	if (alarm.name === 'FetchData') {
 		fetchData();

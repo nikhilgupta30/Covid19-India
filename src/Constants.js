@@ -29,4 +29,18 @@ module.exports = Object.freeze({
 	MENUABOUT: 'About',
 
 	TOTALCODE: 'tt',
+
+	SETTINGS: {
+		BADGESETTING: {
+			badgeDataType: ['Confirmed', 'Active', 'Recovered', 'Deaths'],
+			badgeValueType: ['Total Value', 'Increased Value'],
+		},
+		TABLESETTING: {
+			tableColumns: ['Confirmed', 'Active', 'Recovered', 'Deaths'],
+			tableSortType: ['Ascending', 'Descending'],
+		},
+		GRAPHSETTING: {
+			graphDuration: ['Two Weeks', 'One Month', 'Beginning'],
+		},
+	},
 });

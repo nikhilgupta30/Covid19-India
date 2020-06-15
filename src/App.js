@@ -68,6 +68,7 @@ class App extends Component {
 	}
 
 	saveSettings(newSettings) {
+		console.log(newSettings);
 		console.log('settings saved');
 		// this.setState({ settings: newSettings });
 		// chrome.storage.local.set({ Settings: newSettings }, () => {
