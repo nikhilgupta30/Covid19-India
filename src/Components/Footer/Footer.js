@@ -38,14 +38,14 @@ const Footer = ({ changeColorTheme, onMenuClick }) => {
 					style={{ cursor: 'pointer', fontSize: '20px', color: '#FFFFFF', marginLeft: '10px' }}
 					icon={faChartLine}
 				/>
-				{/* <FontAwesomeIcon
+				<FontAwesomeIcon
 					onClick={() => {
 						onMenuClick(constants.MENUSETTINGS);
 					}}
 					title={constants.MENUSETTINGS}
 					style={{ cursor: 'pointer', fontSize: '20px', color: '#FFFFFF', marginLeft: '10px' }}
 					icon={faCog}
-				/> */}
+				/>
 				<FontAwesomeIcon
 					onClick={() => {
 						onMenuClick(constants.MENUABOUT);

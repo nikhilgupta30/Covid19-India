@@ -14,6 +14,9 @@
 # publish
 /publish
 
+# options page
+/public/options
+
 # misc
 .DS_Store
 .env.local

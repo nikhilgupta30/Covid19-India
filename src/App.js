@@ -17,7 +17,8 @@ class App extends Component {
 		this.state = {
 			data: '',
 			dailyData: '',
-			mainBarType: constants.MENUHOME,
+			mainBarType: constants.MENUSETTINGS,
+			settings: {},
 			theme: '',
 		};
 		// this.fetchData = this.fetchData.bind(this);
@@ -31,51 +32,60 @@ class App extends Component {
 
 	fetchData() {
 		// from storage
-		const self = this;
-		chrome.storage.local.get(['StateData', 'DailyData', 'Theme'], function (response) {
-			// console.log(response.Theme);
-			// console.log(response.StateData);
-			// console.log(response.DailyData);
-			const data = response.StateData;
-			const dailyData = response.DailyData;
-			const theme = response.Theme;
+		// const self = this;
+		// chrome.storage.local.get(['StateData', 'DailyData', 'Settings','Theme'], function (response) {
+		// 	// console.log(response.Theme);
+		// 	// console.log(response.StateData);
+		// 	// console.log(response.DailyData);
+		// 	const data = response.StateData;
+		// 	const dailyData = response.DailyData;
+		// 	const theme = response.Theme;
+		// const settings = response.Settings;
 
-			self.setState({ data: data, dailyData: dailyData, theme: theme });
-		});
+		// self.setState({ data: data, dailyData: dailyData, settings: settings, theme: theme });
+		// });
 
 		// direct hit api
-		// fetch('https://api.covid19india.org/data.json')
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		const stateData = data.statewise;
-		// 		this.setState({ data: stateData });
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+		fetch('https://api.covid19india.org/data.json')
+			.then((response) => response.json())
+			.then((data) => {
+				const stateData = data.statewise;
+				this.setState({ data: stateData });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 
-		// fetch('https://api.covid19india.org/states_daily.json')
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		const dailyData = data.states_daily;
-		// 		this.setState({ dailyData: dailyData });
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+		fetch('https://api.covid19india.org/states_daily.json')
+			.then((response) => response.json())
+			.then((data) => {
+				const dailyData = data.states_daily;
+				this.setState({ dailyData: dailyData });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	saveSettings(newSettings) {
+		console.log('settings saved');
+		// this.setState({ settings: newSettings });
+		// chrome.storage.local.set({ Settings: newSettings }, () => {
+		// 	console.log('Settings Updated');
+		// });
 	}
 
 	changeColorTheme() {
 		if (this.state.theme === constants.LIGHTTHEME) {
 			this.setState({ theme: constants.DARKTHEME });
-			chrome.storage.local.set({ Theme: constants.DARKTHEME }, () => {
-				// console.log('Dark Theme stored in Local Storage');
-			});
+			// chrome.storage.local.set({ Theme: constants.DARKTHEME }, () => {
+			// 	// console.log('Dark Theme stored in Local Storage');
+			// });
 		} else {
 			this.setState({ theme: constants.LIGHTTHEME });
-			chrome.storage.local.set({ Theme: constants.LIGHTTHEME }, () => {
-				// console.log('Light Theme stored in Local Storage');
-			});
+			// chrome.storage.local.set({ Theme: constants.LIGHTTHEME }, () => {
+			// 	// console.log('Light Theme stored in Local Storage');
+			// });
 		}
 	}
 
@@ -90,7 +100,7 @@ class App extends Component {
 				Mainbar = <Trends data={this.state.data} dailyData={this.state.dailyData} />;
 				break;
 			case constants.MENUSETTINGS:
-				Mainbar = <Settings />;
+				Mainbar = <Settings currSettings={this.state.settings} saveSettings={this.saveSettings} />;
 				break;
 			case constants.MENUABOUT:
 				Mainbar = <About />;
