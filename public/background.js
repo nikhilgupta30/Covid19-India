@@ -17,17 +17,17 @@ const fetchData = () => {
 						console.log('Daily Data Saved in Local Storage');
 					});
 
-					setBadge(stateData[0]);
+					setBadge(stateData, dailyData);
 				})
 				.catch((err) => console.log(err));
 		})
 		.catch((err) => console.log(err));
 };
 
-const setBadge = (data) => {
-	let confirmed = data.confirmed;
-	let recovered = data.recovered;
-	let deaths = data.deaths;
+const setBadge = (stateData, dailyData) => {
+	let confirmed = stateData[0].confirmed;
+	let recovered = stateData[0].recovered;
+	let deaths = stateData[0].deaths;
 
 	const today = new Date();
 
@@ -35,9 +35,9 @@ const setBadge = (data) => {
 		'Covid19 India' +
 		' - ' +
 		getDayString(today.getDay()) +
-		' ' +
-		today.getDate() +
 		', ' +
+		today.getDate() +
+		' ' +
 		getMonthStr(today.getMonth()) +
 		'\n- - - - - - - - - - - - - - - - - - -\n' +
 		'Confirmed: ' +
@@ -47,9 +47,50 @@ const setBadge = (data) => {
 		'\nDeaths: ' +
 		deaths;
 
-	chrome.browserAction.setBadgeText({ text: kFormat(confirmed) });
 	chrome.browserAction.setTitle({
 		title: hoverText,
+	});
+
+	chrome.storage.local.get(['Settings'], function (response) {
+		if (response.Settings !== void 0) {
+			const defaultState = response.Settings.DefaultState;
+			const dataTypeOnBadge = response.Settings.DataTypeOnBadge;
+			const valueToShow = response.Settings.ValueToShow;
+
+			let selectedState = stateData[0];
+			stateData.forEach((State) => {
+				if (defaultState === State.state) {
+					selectedState = State;
+				}
+			});
+
+			let stateCode = 'TT';
+			StateList.stateList.forEach((State) => {
+				if (State.state === defaultState) stateCode = State.stateCode;
+			});
+
+			let badgeTextValue = 0;
+			let totalValue = 0;
+			totalValue = parseInt(selectedState[dataTypeOnBadge.toLowerCase()]);
+
+			if (valueToShow === 'Total Value') {
+				badgeTextValue = totalValue;
+			} else {
+				let index = 0;
+				if (dataTypeOnBadge === 'Confirmed') index = 0;
+				else if (dataTypeOnBadge === 'Recovered') index = 1;
+				else index = 2;
+
+				let prevValue = 0;
+				for (let i = 0; i < dailyData.length; i = i + 3) {
+					prevValue = prevValue + parseInt(dailyData[i + index][stateCode.toLowerCase()]);
+				}
+
+				badgeTextValue = totalValue - prevValue;
+			}
+
+			chrome.browserAction.setBadgeText({ text: kFormat(badgeTextValue) });
+		}
 	});
 };
 
@@ -62,7 +103,7 @@ const kFormat = (value) => {
 				? (parseInt(value) / 1000 - Math.floor(parseInt(value) / 1000) < 0.5
 						? Math.floor(parseInt(value) / 1000)
 						: Math.ceil(parseInt(value) / 1000)) + 'k'
-				: value;
+				: value.toString();
 	}
 
 	return valStr;
@@ -159,11 +200,168 @@ chrome.alarms.create('FetchData', {
 // Setting color of text over icon
 chrome.browserAction.setBadgeBackgroundColor({ color: '#e40021' });
 
-fetchData();
 storeDefaultTheme();
 storeDefaultSettings();
+fetchData();
 chrome.alarms.onAlarm.addListener(function (alarm) {
 	if (alarm.name === 'FetchData') {
 		fetchData();
 	}
 });
+
+const StateList = {
+	stateList: [
+		{
+			state: 'All States',
+			stateCode: 'TT',
+		},
+		{
+			state: 'Andaman and Nicobar Islands',
+			stateCode: 'AN',
+		},
+		{
+			state: 'Andhra Pradesh',
+			stateCode: 'AP',
+		},
+		{
+			state: 'Arunachal Pradesh',
+			stateCode: 'AR',
+		},
+		{
+			state: 'Assam',
+			stateCode: 'AS',
+		},
+		{
+			state: 'Bihar',
+			stateCode: 'BR',
+		},
+		{
+			state: 'Chandigarh',
+			stateCode: 'CH',
+		},
+		{
+			state: 'Chhattisgarh',
+			stateCode: 'CT',
+		},
+		{
+			state: 'Dadra and Nagar Haveli and Daman and Diu',
+			stateCode: 'DN',
+		},
+		{
+			state: 'Delhi',
+			stateCode: 'DL',
+		},
+		{
+			state: 'Goa',
+			stateCode: 'GA',
+		},
+		{
+			state: 'Gujarat',
+			stateCode: 'GJ',
+		},
+		{
+			state: 'Haryana',
+			stateCode: 'HR',
+		},
+		{
+			state: 'Himachal Pradesh',
+			stateCode: 'HP',
+		},
+		{
+			state: 'Jammu and Kashmir',
+			stateCode: 'JK',
+		},
+		{
+			state: 'Jharkhand',
+			stateCode: 'JH',
+		},
+		{
+			state: 'Karnataka',
+			stateCode: 'KA',
+		},
+		{
+			state: 'Kerala',
+			stateCode: 'KL',
+		},
+		{
+			state: 'Ladakh',
+			stateCode: 'LA',
+		},
+		{
+			state: 'Lakshadweep',
+			stateCode: 'LD',
+		},
+		{
+			state: 'Madhya Pradesh',
+			stateCode: 'MP',
+		},
+		{
+			state: 'Maharashtra',
+			stateCode: 'MH',
+		},
+		{
+			state: 'Manipur',
+			stateCode: 'MN',
+		},
+		{
+			state: 'Meghalaya',
+			stateCode: 'ML',
+		},
+		{
+			state: 'Mizoram',
+			stateCode: 'MZ',
+		},
+		{
+			state: 'Nagaland',
+			stateCode: 'NL',
+		},
+		{
+			state: 'Odisha',
+			stateCode: 'OR',
+		},
+		{
+			state: 'Puducherry',
+			stateCode: 'PY',
+		},
+		{
+			state: 'Punjab',
+			stateCode: 'PB',
+		},
+		{
+			state: 'Rajasthan',
+			stateCode: 'RJ',
+		},
+		{
+			state: 'Sikkim',
+			stateCode: 'SK',
+		},
+		{
+			state: 'State Unassigned',
+			stateCode: 'UN',
+		},
+		{
+			state: 'Tamil Nadu',
+			stateCode: 'TN',
+		},
+		{
+			state: 'Telangana',
+			stateCode: 'TG',
+		},
+		{
+			state: 'Tripura',
+			stateCode: 'TR',
+		},
+		{
+			state: 'Uttar Pradesh',
+			stateCode: 'UP',
+		},
+		{
+			state: 'Uttarakhand',
+			stateCode: 'UT',
+		},
+		{
+			state: 'West Bengal',
+			stateCode: 'WB',
+		},
+	],
+};
