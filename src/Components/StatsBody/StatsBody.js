@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import StateTable from './StateTable/StateTable';
 import TotalStats from './TotalStats/TotalStats';
-import SettingsContext from '../../settingsContext';
+import GlobalContext from '../../GlobalContext';
 
 const constants = require('../../Constants');
 
 class StatsBody extends Component {
-	static contextType = SettingsContext;
+	static contextType = GlobalContext;
 
 	constructor(props) {
 		super(props);
@@ -21,7 +21,7 @@ class StatsBody extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const settings = this.context;
+		const settings = this.context.settings;
 
 		let data = nextProps.data;
 		if (data) {
@@ -71,7 +71,7 @@ class StatsBody extends Component {
 	}
 
 	componentDidMount() {
-		const settings = this.context;
+		const settings = this.context.settings;
 
 		let data = this.props.data;
 		let dailyData = this.props.dailyData;

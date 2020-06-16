@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import TotalStatsCard from './TotalStatsCard';
-import ThemeContext from '../../../themeContext';
+import GlobalContext from '../../../GlobalContext';
 
 const constants = require('../../../Constants');
 
 const TotalStats = ({ totalData }) => {
-	const theme = useContext(ThemeContext);
+	const theme = useContext(GlobalContext).theme;
 
 	return (
 		<div style={{ textAlign: 'center', margin: 'auto', backgroundColor: theme === constants.LIGHTTHEME ? '#FFFFFF' : '#343a40' }} className='row'>

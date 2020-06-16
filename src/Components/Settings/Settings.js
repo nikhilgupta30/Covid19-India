@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import StateList from '../../stateList.json';
 import SingleSetting from './SingleSetting';
-import ThemeContext from '../../themeContext';
+import GlobalContext from '../../GlobalContext';
 
 const constants = require('../../Constants');
 
 class Settings extends Component {
-	static contextType = ThemeContext;
+	static contextType = GlobalContext;
 
 	constructor(props) {
 		super(props);
@@ -21,7 +21,6 @@ class Settings extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps.currSettings);
 		this.setState({ settings: nextProps.currSettings });
 	}
 
@@ -41,9 +40,8 @@ class Settings extends Component {
 	}
 
 	render() {
-		// console.log(this.state.settings);
-		const textColor = this.context === constants.LIGHTTHEME ? '#000000' : '#ffffff';
-		const headerColor = this.context === constants.LIGHTTHEME ? '#3b536b' : '#ffffff';
+		const textColor = this.context.theme === constants.LIGHTTHEME ? '#000000' : '#ffffff';
+		const headerColor = this.context.theme === constants.LIGHTTHEME ? '#3b536b' : '#ffffff';
 
 		const BadgeSettings = (
 			<div>
@@ -145,7 +143,7 @@ class Settings extends Component {
 						paddingBottom: '30px',
 						paddingTop: '15px',
 						textAlign: 'center',
-						backgroundColor: this.context === constants.LIGHTTHEME ? '#ffffff' : '#343a40',
+						backgroundColor: this.context.theme === constants.LIGHTTHEME ? '#ffffff' : '#343a40',
 					}}>
 					<form onSubmit={this.handleSubmit}>
 						<p style={{ fontSize: '24px', fontWeight: 'bold', color: headerColor }}>Settings</p>

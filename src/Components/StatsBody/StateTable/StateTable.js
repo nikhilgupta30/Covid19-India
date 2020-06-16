@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import StateTableHead from './StateTableHead';
 import StateTableCell from './StateTableCell';
-import ThemeContext from '../../../themeContext';
+import GlobalContext from '../../../GlobalContext';
 
 const constants = require('../../../Constants');
 
@@ -31,7 +31,7 @@ const StateTable = ({ data, headTitles, sortColumn, sortType, headerClick }) => 
 		return <StateTableHead titleHeader={title} sortColumn={sortColumn} sortType={sortType} headerClick={headerClick} />;
 	});
 
-	const theme = useContext(ThemeContext);
+	const theme = useContext(GlobalContext).theme;
 
 	return (
 		<div

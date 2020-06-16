@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import RadioButton from './RadioButton';
-import ThemeContext from '../../themeContext';
+import GlobalContext from '../../GlobalContext';
 
 const constants = require('../../Constants');
 
 const SingleSetting = ({ divTitle, labels, radioButtonWidth, handleChange, selectedRadio }) => {
-	const theme = useContext(ThemeContext);
+	const theme = useContext(GlobalContext).theme;
 	const RadioRow = labels.map((label) => {
 		return (
 			<RadioButton

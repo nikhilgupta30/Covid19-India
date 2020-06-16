@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun, faInfoCircle, faHome, faCog, faChartLine } from '@fortawesome/free-solid-svg-icons';
-import ThemeContext from '../../themeContext';
+import GlobalContext from '../../GlobalContext';
 
 const constants = require('../../Constants');
 
 const Footer = ({ changeColorTheme, onMenuClick }) => {
-	const theme = useContext(ThemeContext);
+	const theme = useContext(GlobalContext).theme;
 
 	return (
 		<div

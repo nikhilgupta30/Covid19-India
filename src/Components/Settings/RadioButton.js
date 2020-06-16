@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import ThemeContext from '../../themeContext';
+import GlobalContext from '../../GlobalContext';
 
 const constants = require('../../Constants');
 
 const RadioButton = ({ label, name, divWidth, handleChange, radioChecked }) => {
-	const theme = useContext(ThemeContext);
+	const theme = useContext(GlobalContext).theme;
 
 	const Input = radioChecked ? (
 		<input onChange={handleChange || ''} type='radio' name={name || ''} value={label || ''} checked />

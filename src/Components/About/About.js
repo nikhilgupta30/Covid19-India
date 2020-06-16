@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import ThemeContext from '../../themeContext';
+import GlobalContext from '../../GlobalContext';
 import poweredDark from '../../Images/poweredDark.png';
 import poweredLight from '../../Images/poweredLight.png';
 import react from '../../Images/credits1.png';
@@ -9,7 +9,7 @@ import fontawesome from '../../Images/credits3.png';
 const constants = require('../../Constants');
 
 const About = () => {
-	const theme = useContext(ThemeContext);
+	const theme = useContext(GlobalContext).theme;
 
 	const textColor = theme === constants.LIGHTTHEME ? '#000000' : '#ffffff';
 

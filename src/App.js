@@ -7,8 +7,7 @@ import Trends from './Components/Trends/Trends';
 import Settings from './Components/Settings/Settings';
 import About from './Components/About/About';
 import Footer from './Components/Footer/Footer';
-import { ThemeProvider } from './themeContext';
-import { SettingsProvider } from './settingsContext';
+import { GlobalProvider } from './GlobalContext';
 
 const constants = require('./Constants');
 
@@ -71,7 +70,7 @@ class App extends Component {
 
 		this.setState({
 			settings: {
-				DefaultState: 'All States',
+				DefaultState: 'Maharashtra',
 				DataTypeOnBadge: 'Confirmed',
 				ValueToShow: 'Total Value',
 				DefaultColumnToSort: 'Recovered',
@@ -126,10 +125,10 @@ class App extends Component {
 
 		return (
 			<div>
-				<ThemeProvider value={this.state.theme}>
-					<SettingsProvider value={this.state.settings}>{Mainbar}</SettingsProvider>
+				<GlobalProvider value={{ theme: this.state.theme, settings: this.state.settings }}>
+					{Mainbar}
 					<Footer changeColorTheme={this.changeColorTheme} onMenuClick={this.onMenuClick} />
-				</ThemeProvider>
+				</GlobalProvider>
 			</div>
 		);
 	}
