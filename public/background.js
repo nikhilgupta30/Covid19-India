@@ -163,7 +163,6 @@ const getMonthStr = (month) => {
 
 const storeDefaultTheme = () => {
 	chrome.storage.local.get(['Theme'], function (response) {
-		console.log(response.Theme);
 		if (response.Theme === void 0) {
 			chrome.storage.local.set({ Theme: 'light' }, () => {
 				console.log('Default theme stored in Local Storage');
@@ -174,7 +173,6 @@ const storeDefaultTheme = () => {
 
 const storeDefaultSettings = () => {
 	chrome.storage.local.get(['Settings'], function (response) {
-		console.log(response.Settings);
 		if (response.Settings === void 0) {
 			const defaultSettings = {
 				DefaultState: 'All States',
