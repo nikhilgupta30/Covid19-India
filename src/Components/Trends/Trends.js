@@ -54,8 +54,8 @@ class Trends extends Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const settings = this.context.settings;
+	componentWillReceiveProps(nextProps, nextContext) {
+		const settings = nextContext.settings;
 		const defaultState = settings.DefaultState;
 		const defaultGraphDuration = settings.DefaultGraphDuration;
 
@@ -86,7 +86,10 @@ class Trends extends Component {
 	}
 
 	getLineData() {
-		const stateCodeLocal = this.state.stateCode.toLowerCase();
+		let stateCodeLocal = this.state.stateCode;
+		if (stateCodeLocal) {
+			stateCodeLocal = stateCodeLocal.toLowerCase();
+		}
 
 		let lineData = {
 			xAxisLabels: [],

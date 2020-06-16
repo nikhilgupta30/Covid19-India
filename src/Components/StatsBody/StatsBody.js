@@ -20,8 +20,8 @@ class StatsBody extends Component {
 		this.headerClick = this.headerClick.bind(this);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const settings = this.context.settings;
+	componentWillReceiveProps(nextProps, nextContext) {
+		const settings = nextContext.settings;
 
 		let data = nextProps.data;
 		if (data) {
