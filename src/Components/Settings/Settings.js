@@ -13,13 +13,7 @@ class Settings extends Component {
 		super(props);
 
 		this.state = {
-			settings: {
-				DataTypeOnBadge: 'Confirmed',
-				ValueToShow: 'Total Value',
-				DefaultColumnToSort: 'Confirmed',
-				DefaultSortType: 'Descending',
-				DefaultGraphDuration: 'Two Weeks',
-			},
+			settings: {},
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,11 +21,12 @@ class Settings extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// this.setState({ settings: nextProps.currSettings });
+		console.log(nextProps.currSettings);
+		this.setState({ settings: nextProps.currSettings });
 	}
 
 	componentDidMount() {
-		// this.setState({ settings: this.props.currSettings });
+		this.setState({ settings: this.props.currSettings });
 	}
 
 	handleSubmit(event) {
@@ -46,12 +41,13 @@ class Settings extends Component {
 	}
 
 	render() {
-		console.log(this.state.settings);
+		// console.log(this.state.settings);
 		const textColor = this.context === constants.LIGHTTHEME ? '#000000' : '#ffffff';
+		const headerColor = this.context === constants.LIGHTTHEME ? '#3b536b' : '#ffffff';
 
 		const BadgeSettings = (
 			<div>
-				<p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', color: textColor }}>Badge Settings</p>
+				<p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', color: headerColor }}>Badge Settings</p>
 				<SingleSetting
 					divTitle='Data Type On Badge'
 					labels={constants.SETTINGS.BADGESETTING.badgeDataType}
@@ -71,7 +67,7 @@ class Settings extends Component {
 
 		const TableSettings = (
 			<div>
-				<p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', color: textColor }}>Table Settings</p>
+				<p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', color: headerColor }}>Table Settings</p>
 				<SingleSetting
 					divTitle='Default Column To Sort'
 					labels={constants.SETTINGS.TABLESETTING.tableColumns}
@@ -91,7 +87,7 @@ class Settings extends Component {
 
 		const GraphSettings = (
 			<div>
-				<p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', color: textColor }}>Graph Settings</p>
+				<p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', color: headerColor }}>Graph Settings</p>
 				<SingleSetting
 					divTitle='Default Graph Duration'
 					labels={constants.SETTINGS.GRAPHSETTING.graphDuration}
@@ -107,7 +103,9 @@ class Settings extends Component {
 				<button
 					key={State.state}
 					onClick={() => {
-						// this.setState({ stateCode: State.stateCode, selectStateTitle: State.state });
+						let settings = { ...this.state.settings };
+						settings.DefaultState = State.state;
+						this.setState({ settings: settings });
 					}}
 					className='dropdown-item'
 					href='#'>
@@ -126,8 +124,7 @@ class Settings extends Component {
 					data-toggle='dropdown'
 					aria-haspopup='true'
 					aria-expanded='false'>
-					{/* {this.state.selectStateTitle} */}
-					Select State
+					{this.state.settings.DefaultState}
 				</button>
 				<div
 					style={{ width: '75%', textAlign: 'center', maxHeight: '150px', overflow: 'auto' }}
@@ -140,24 +137,35 @@ class Settings extends Component {
 
 		return (
 			<div>
-				<form onSubmit={this.handleSubmit}>
-					<div
-						style={{
-							width: '600px',
-							padding: '30px',
-							textAlign: 'center',
-							backgroundColor: this.context === constants.LIGHTTHEME ? '#ffffff' : '#343a40',
-						}}>
-						<p style={{ fontSize: '24px', fontWeight: 'bold', color: textColor }}>Settings</p>
-						<div style={{ paddingBottom: '20px' }}>{selectStateDropDown}</div>
+				<div
+					style={{
+						width: '600px',
+						paddingLeft: '30px',
+						paddingRight: '30px',
+						paddingBottom: '30px',
+						paddingTop: '15px',
+						textAlign: 'center',
+						backgroundColor: this.context === constants.LIGHTTHEME ? '#ffffff' : '#343a40',
+					}}>
+					<form onSubmit={this.handleSubmit}>
+						<p style={{ fontSize: '24px', fontWeight: 'bold', color: headerColor }}>Settings</p>
+						<div style={{ paddingBottom: '20px' }}>
+							{selectStateDropDown}
+							<div style={{ width: '100%', color: textColor, fontSize: '12px', fontStyle: 'Italic', textAlign: 'right', marginTop: '5px' }}>
+								* Default State for Badge and Graph
+							</div>
+						</div>
 						{BadgeSettings}
 						{TableSettings}
 						{GraphSettings}
-						<button style={{ width: '300px', borderRadius: '10px', margin: '15px' }} type='button' className='btn btn-success'>
-							Save Changes
-						</button>
-					</div>
-				</form>
+						<input
+							style={{ width: '300px', borderRadius: '10px', margin: '15px', backgroundColor: '#0cc988', color: '#ffffff' }}
+							className='btn'
+							type='submit'
+							value='Save Changes'
+						/>
+					</form>
+				</div>
 			</div>
 		);
 	}

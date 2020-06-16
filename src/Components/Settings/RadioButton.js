@@ -7,19 +7,12 @@ const RadioButton = ({ label, name, divWidth, handleChange, radioChecked }) => {
 	const theme = useContext(ThemeContext);
 
 	const Input = radioChecked ? (
-		<input onChange={handleChange} type='radio' name={name} value={label || ''} checked />
+		<input onChange={handleChange || ''} type='radio' name={name || ''} value={label || ''} checked />
 	) : (
-		<input onChange={handleChange} type='radio' name={name} value={label || ''} />
+		<input onChange={handleChange || ''} type='radio' name={name || ''} value={label || ''} />
 	);
 
 	return (
-		// <div style={{ width: divWidth }} className='form-check'>
-		// 	<label>
-		// 		<input type='radio' name='react-tips' value='option1' checked={true} className='form-check-input' />
-		// 		Option 1
-		// 	</label>
-		// </div>
-
 		<div style={{ width: divWidth }} className='radio'>
 			<label>
 				{Input}

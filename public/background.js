@@ -136,13 +136,14 @@ const storeDefaultSettings = () => {
 		console.log(response.Settings);
 		if (response.Settings === void 0) {
 			const defaultSettings = {
+				DefaultState: 'All States',
 				DataTypeOnBadge: 'Confirmed',
 				ValueToShow: 'Total Value',
 				DefaultColumnToSort: 'Confirmed',
 				DefaultSortType: 'Descending',
 				DefaultGraphDuration: 'Two Weeks',
 			};
-			chrome.storage.local.set({ Theme: defaultSettings }, () => {
+			chrome.storage.local.set({ Settings: defaultSettings }, () => {
 				console.log('Default Settings stored in Local Storage');
 			});
 		}

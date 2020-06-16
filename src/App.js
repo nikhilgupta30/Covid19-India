@@ -17,13 +17,14 @@ class App extends Component {
 		this.state = {
 			data: '',
 			dailyData: '',
-			mainBarType: constants.MENUSETTINGS,
+			mainBarType: constants.MENUHOME,
 			settings: {},
 			theme: '',
 		};
 		// this.fetchData = this.fetchData.bind(this);
 		this.changeColorTheme = this.changeColorTheme.bind(this);
 		this.onMenuClick = this.onMenuClick.bind(this);
+		this.saveSettings = this.saveSettings.bind(this);
 	}
 
 	componentDidMount() {
@@ -32,61 +33,73 @@ class App extends Component {
 
 	fetchData() {
 		// from storage
-		// const self = this;
-		// chrome.storage.local.get(['StateData', 'DailyData', 'Settings','Theme'], function (response) {
-		// 	// console.log(response.Theme);
-		// 	// console.log(response.StateData);
-		// 	// console.log(response.DailyData);
-		// 	const data = response.StateData;
-		// 	const dailyData = response.DailyData;
-		// 	const theme = response.Theme;
-		// const settings = response.Settings;
+		const self = this;
+		chrome.storage.local.get(['StateData', 'DailyData', 'Settings', 'Theme'], function (response) {
+			// console.log(response.Theme);
+			// console.log(response.StateData);
+			// console.log(response.DailyData);
+			console.log(response.Settings);
+			const data = response.StateData;
+			const dailyData = response.DailyData;
+			const theme = response.Theme;
+			const settings = response.Settings;
 
-		// self.setState({ data: data, dailyData: dailyData, settings: settings, theme: theme });
-		// });
+			self.setState({ data: data, dailyData: dailyData, settings: settings, theme: theme });
+		});
 
 		// direct hit api
-		fetch('https://api.covid19india.org/data.json')
-			.then((response) => response.json())
-			.then((data) => {
-				const stateData = data.statewise;
-				this.setState({ data: stateData });
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		// fetch('https://api.covid19india.org/data.json')
+		// 	.then((response) => response.json())
+		// 	.then((data) => {
+		// 		const stateData = data.statewise;
+		// 		this.setState({ data: stateData });
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 	});
 
-		fetch('https://api.covid19india.org/states_daily.json')
-			.then((response) => response.json())
-			.then((data) => {
-				const dailyData = data.states_daily;
-				this.setState({ dailyData: dailyData });
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		// fetch('https://api.covid19india.org/states_daily.json')
+		// 	.then((response) => response.json())
+		// 	.then((data) => {
+		// 		const dailyData = data.states_daily;
+		// 		this.setState({ dailyData: dailyData });
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 	});
+
+		// this.setState({
+		// 	settings: {
+		// 		DefaultState: 'All States',
+		// 		DataTypeOnBadge: 'Confirmed',
+		// 		ValueToShow: 'Total Value',
+		// 		DefaultColumnToSort: 'Confirmed',
+		// 		DefaultSortType: 'Descending',
+		// 		DefaultGraphDuration: 'Two Weeks',
+		// 	},
+		// });
 	}
 
 	saveSettings(newSettings) {
-		console.log(newSettings);
-		console.log('settings saved');
-		// this.setState({ settings: newSettings });
-		// chrome.storage.local.set({ Settings: newSettings }, () => {
-		// 	console.log('Settings Updated');
-		// });
+		// console.log(newSettings);
+		// console.log('settings saved');
+		this.setState({ settings: newSettings });
+		chrome.storage.local.set({ Settings: newSettings }, () => {
+			console.log('Settings Updated');
+		});
 	}
 
 	changeColorTheme() {
 		if (this.state.theme === constants.LIGHTTHEME) {
 			this.setState({ theme: constants.DARKTHEME });
-			// chrome.storage.local.set({ Theme: constants.DARKTHEME }, () => {
-			// 	// console.log('Dark Theme stored in Local Storage');
-			// });
+			chrome.storage.local.set({ Theme: constants.DARKTHEME }, () => {
+				// console.log('Dark Theme stored in Local Storage');
+			});
 		} else {
 			this.setState({ theme: constants.LIGHTTHEME });
-			// chrome.storage.local.set({ Theme: constants.LIGHTTHEME }, () => {
-			// 	// console.log('Light Theme stored in Local Storage');
-			// });
+			chrome.storage.local.set({ Theme: constants.LIGHTTHEME }, () => {
+				// console.log('Light Theme stored in Local Storage');
+			});
 		}
 	}
 
