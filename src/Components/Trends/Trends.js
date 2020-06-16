@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
-import ThemeContext from '../../themeContext';
+import GlobalContext from '../../GlobalContext';
 import StateList from '../../stateList.json';
 
 const constants = require('../../Constants');
 
 class Trends extends Component {
-	static contextType = ThemeContext;
+	static contextType = GlobalContext;
 
 	constructor(props) {
 		super(props);
@@ -24,11 +24,65 @@ class Trends extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({ data: this.props.data, dailyData: this.props.dailyData });
+		const settings = this.context.settings;
+		const defaultState = settings.DefaultState;
+		const defaultGraphDuration = settings.DefaultGraphDuration;
+
+		let noOfDays = 14;
+		if (defaultGraphDuration === constants.SETTINGS.GRAPHSETTING.graphDuration[0]) {
+			noOfDays = 14;
+		} else if (defaultGraphDuration === constants.SETTINGS.GRAPHSETTING.graphDuration[1]) {
+			noOfDays = 30;
+		} else {
+			noOfDays = Number.MAX_VALUE;
+		}
+
+		const selectStateTitle = defaultState;
+		let stateCode = 'TT';
+		StateList.stateList.forEach((State) => {
+			if (State.state === selectStateTitle) {
+				stateCode = State.stateCode;
+			}
+		});
+
+		this.setState({
+			data: this.props.data,
+			dailyData: this.props.dailyData,
+			noOfDays: noOfDays,
+			selectStateTitle: selectStateTitle,
+			stateCode: stateCode,
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({ data: nextProps.data, dailyData: nextProps.dailyData });
+		const settings = this.context.settings;
+		const defaultState = settings.DefaultState;
+		const defaultGraphDuration = settings.DefaultGraphDuration;
+
+		let noOfDays = 14;
+		if (defaultGraphDuration === constants.SETTINGS.GRAPHSETTING.graphDuration[0]) {
+			noOfDays = 14;
+		} else if (defaultGraphDuration === constants.SETTINGS.GRAPHSETTING.graphDuration[1]) {
+			noOfDays = 30;
+		} else {
+			noOfDays = Number.MAX_VALUE;
+		}
+
+		const selectStateTitle = defaultState;
+		let stateCode = 'TT';
+		StateList.stateList.forEach((State) => {
+			if (State.state === selectStateTitle) {
+				stateCode = State.stateCode;
+			}
+		});
+
+		this.setState({
+			data: nextProps.data,
+			dailyData: nextProps.dailyData,
+			noOfDays: noOfDays,
+			selectStateTitle: selectStateTitle,
+			stateCode: stateCode,
+		});
 	}
 
 	getLineData() {
@@ -161,7 +215,7 @@ class Trends extends Component {
 						show: true,
 						rotate: 0,
 						style: {
-							colors: this.context === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
+							colors: this.context.theme === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
 						},
 					},
 					datetimeFormatter: {
@@ -181,7 +235,7 @@ class Trends extends Component {
 				colors: ['#FF4560', '#00e396', '#feb019'],
 				markers: {
 					size: 4,
-					strokeColors: this.context === constants.LIGHTTHEME ? '#FFFFFF' : '#2C3E50',
+					strokeColors: this.context.theme === constants.LIGHTTHEME ? '#FFFFFF' : '#2C3E50',
 				},
 				title: {
 					text: this.state.selectStateTitle,
@@ -194,21 +248,21 @@ class Trends extends Component {
 						fontSize: '18px',
 						fontWeight: 'bold',
 						fontFamily: undefined,
-						color: this.context === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
+						color: this.context.theme === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
 					},
 				},
 				legend: {
 					show: true,
 					position: 'top',
 					labels: {
-						colors: this.context === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
+						colors: this.context.theme === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
 					},
 				},
 				tooltip: {
 					enabled: true,
 					shared: true,
 					followCursor: false,
-					theme: this.context === constants.LIGHTTHEME ? 'light' : 'dark',
+					theme: this.context.theme === constants.LIGHTTHEME ? 'light' : 'dark',
 				},
 			},
 			series: [
@@ -235,7 +289,7 @@ class Trends extends Component {
 					show: true,
 					position: 'left',
 					labels: {
-						colors: this.context === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
+						colors: this.context.theme === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
 						useSeriesColors: false,
 					},
 				},
@@ -252,7 +306,7 @@ class Trends extends Component {
 									fontSize: '22px',
 									fontWeight: 'bold',
 									fontFamily: 'Helvetica, Arial, sans-serif',
-									color: this.context === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
+									color: this.context.theme === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
 									offsetY: -10,
 								},
 								value: {
@@ -260,7 +314,7 @@ class Trends extends Component {
 									fontSize: '16px',
 									fontWeight: 'bold',
 									fontFamily: 'Helvetica, Arial, sans-serif',
-									color: this.context === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
+									color: this.context.theme === constants.LIGHTTHEME ? '#000000' : '#FFFFFF',
 									offsetY: 5,
 									formatter: function (val) {
 										return val;
@@ -322,7 +376,7 @@ class Trends extends Component {
 
 		return (
 			<div style={{ paddingBottom: '30px' }}>
-				<div style={{ padding: '30px', width: '600px', backgroundColor: this.context === constants.LIGHTTHEME ? '#ffffff' : '#343a40' }}>
+				<div style={{ padding: '30px', width: '600px', backgroundColor: this.context.theme === constants.LIGHTTHEME ? '#ffffff' : '#343a40' }}>
 					<div style={{ paddingBottom: '20px', paddingLeft: '30px', paddingRight: '30px' }}>{selectStateDropDown}</div>
 					<div style={{ marginLeft: '20px' }}>
 						<Chart options={lineChart.options} series={lineChart.series} type='line' width='500px' />
