@@ -49,7 +49,7 @@ class Settings extends Component {
 				<SingleSetting
 					divTitle='Data Type On Badge'
 					labels={constants.SETTINGS.BADGESETTING.badgeDataType}
-					radioButtonWidth='25%'
+					radioButtonWidth='33%'
 					handleChange={this.handleChange}
 					selectedRadio={this.state.settings.DataTypeOnBadge}
 				/>

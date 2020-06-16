@@ -32,7 +32,7 @@ module.exports = Object.freeze({
 
 	SETTINGS: {
 		BADGESETTING: {
-			badgeDataType: ['Confirmed', 'Active', 'Recovered', 'Deaths'],
+			badgeDataType: ['Confirmed', 'Recovered', 'Deaths'],
 			badgeValueType: ['Total Value', 'Increased Value'],
 		},
 		TABLESETTING: {
