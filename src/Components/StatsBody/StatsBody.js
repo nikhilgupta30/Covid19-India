@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import StateTable from './StateTable/StateTable';
 import TotalStats from './TotalStats/TotalStats';
+import SettingsContext from '../../settingsContext';
+
 const constants = require('../../Constants');
 
 class StatsBody extends Component {
+	static contextType = SettingsContext;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -17,29 +21,58 @@ class StatsBody extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		const settings = this.context;
+
 		let data = nextProps.data;
-		data.forEach((state) => {
-			let prevConfirmed = 0;
-			let prevRecovered = 0;
-			let prevDeaths = 0;
-			for (let i = 0; i < nextProps.dailyData.length; i = i + 3) {
-				prevConfirmed += parseInt(nextProps.dailyData[i][state.statecode.toLowerCase()]);
-				prevRecovered += parseInt(nextProps.dailyData[i + 1][state.statecode.toLowerCase()]);
-				prevDeaths += parseInt(nextProps.dailyData[i + 2][state.statecode.toLowerCase()]);
+		if (data) {
+			data.forEach((state) => {
+				let prevConfirmed = 0;
+				let prevRecovered = 0;
+				let prevDeaths = 0;
+				for (let i = 0; i < nextProps.dailyData.length; i = i + 3) {
+					prevConfirmed += parseInt(nextProps.dailyData[i][state.statecode.toLowerCase()]);
+					prevRecovered += parseInt(nextProps.dailyData[i + 1][state.statecode.toLowerCase()]);
+					prevDeaths += parseInt(nextProps.dailyData[i + 2][state.statecode.toLowerCase()]);
+				}
+				let prevActive = prevConfirmed - prevRecovered - prevDeaths;
+				state['diffConfirmed'] = Math.max(0, parseInt(state['confirmed']) - prevConfirmed);
+				state['diffActive'] = Math.max(0, parseInt(state['active']) - prevActive);
+				state['diffRecovered'] = Math.max(0, parseInt(state['recovered']) - prevRecovered);
+				state['diffDeaths'] = Math.max(0, parseInt(state['deaths']) - prevDeaths);
+				if (state.statecode.toLowerCase() === constants.TOTALCODE) {
+					this.setState({ totalData: state });
+				}
+			});
+		}
+
+		if (data) {
+			const colToSort = settings.DefaultColumnToSort.toLowerCase();
+			for (let i = 0; i < data.length - 1; i++) {
+				for (let j = i + 1; j < data.length; j++) {
+					if (colToSort === constants.STATE) {
+						if (data[i][colToSort].localeCompare(data[j][colToSort]) === -1) {
+							const temp = data[i];
+							data[i] = data[j];
+							data[j] = temp;
+						}
+					} else if (parseInt(data[i][colToSort]) < parseInt(data[j][colToSort])) {
+						const temp = data[i];
+						data[i] = data[j];
+						data[j] = temp;
+					}
+				}
 			}
-			let prevActive = prevConfirmed - prevRecovered - prevDeaths;
-			state['diffConfirmed'] = Math.max(0, parseInt(state['confirmed']) - prevConfirmed);
-			state['diffActive'] = Math.max(0, parseInt(state['active']) - prevActive);
-			state['diffRecovered'] = Math.max(0, parseInt(state['recovered']) - prevRecovered);
-			state['diffDeaths'] = Math.max(0, parseInt(state['deaths']) - prevDeaths);
-			if (state.statecode.toLowerCase() === constants.TOTALCODE) {
-				this.setState({ totalData: state });
+			if (settings.DefaultSortType === constants.ASC) {
+				data.reverse();
 			}
-		});
-		this.setState({ data: data });
+
+			this.setState({ data: data, sortColumn: settings.DefaultColumnToSort, sortType: settings.DefaultSortType });
+		}
 	}
 
 	componentDidMount() {
+		const settings = this.context;
+
 		let data = this.props.data;
 		let dailyData = this.props.dailyData;
 		if (data) {
@@ -61,7 +94,30 @@ class StatsBody extends Component {
 					this.setState({ totalData: state });
 				}
 			});
-			this.setState({ data: data });
+		}
+
+		if (data) {
+			const colToSort = settings.DefaultColumnToSort.toLowerCase();
+			for (let i = 0; i < data.length - 1; i++) {
+				for (let j = i + 1; j < data.length; j++) {
+					if (colToSort === constants.STATE) {
+						if (data[i][colToSort].localeCompare(data[j][colToSort]) === -1) {
+							const temp = data[i];
+							data[i] = data[j];
+							data[j] = temp;
+						}
+					} else if (parseInt(data[i][colToSort]) < parseInt(data[j][colToSort])) {
+						const temp = data[i];
+						data[i] = data[j];
+						data[j] = temp;
+					}
+				}
+			}
+			if (settings.DefaultSortType === constants.ASC) {
+				data.reverse();
+			}
+
+			this.setState({ data: data, sortColumn: settings.DefaultColumnToSort, sortType: settings.DefaultSortType });
 		}
 	}
 
@@ -92,7 +148,7 @@ class StatsBody extends Component {
 					}
 				}
 			}
-			this.setState({ sortColumn: colToSort, sortType: constants.DESC, data: table });
+			this.setState({ sortColumn: headerName, sortType: constants.DESC, data: table });
 		}
 	}
 

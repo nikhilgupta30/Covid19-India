@@ -5,11 +5,13 @@ const constants = require('../../../Constants');
 
 const StateTableHead = ({ titleHeader, sortColumn, sortType, headerClick }) => {
 	let icon = null;
-	if (titleHeader.toLowerCase() === sortColumn.toLowerCase()) {
-		if (sortType === constants.ASC) {
-			icon = <FontAwesomeIcon icon={faSortAmountDownAlt} />;
-		} else {
-			icon = <FontAwesomeIcon icon={faSortAmountDown} />;
+	if (sortColumn) {
+		if (titleHeader.toLowerCase() === sortColumn.toLowerCase()) {
+			if (sortType === constants.ASC) {
+				icon = <FontAwesomeIcon icon={faSortAmountDownAlt} />;
+			} else {
+				icon = <FontAwesomeIcon icon={faSortAmountDown} />;
+			}
 		}
 	}
 

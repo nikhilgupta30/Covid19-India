@@ -3,14 +3,14 @@ module.exports = Object.freeze({
 	VERSION: '0.1.0',
 	AUTHOR: 'Nikhil Gupta',
 
-	STATE: 'state',
-	CONFIRMED: 'confirmed',
-	ACTIVE: 'active',
-	RECOVERED: 'recovered',
-	DEATHS: 'deaths',
+	STATE: 'State',
+	CONFIRMED: 'Confirmed',
+	ACTIVE: 'Active',
+	RECOVERED: 'Recovered',
+	DEATHS: 'Deaths',
 
-	ASC: 'asc',
-	DESC: 'desc',
+	ASC: 'Ascending',
+	DESC: 'Descending',
 
 	CONFIRMEDCOLOR: '#f20738',
 	ACTIVECOLOR: '#1987ff',
