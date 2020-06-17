@@ -73,10 +73,7 @@ const setBadge = (stateData, dailyData) => {
 			let totalValue = 0;
 			totalValue = parseInt(selectedState[dataTypeOnBadge.toLowerCase()]);
 
-			let badgeColor = '#e40021';
-			if (dataTypeOnBadge === 'Confirmed') badgeColor = '#e40021';
-			else if (dataTypeOnBadge === 'Recovered') badgeColor = '#0eb97f';
-			else badgeColor = '#ffa800';
+			let badgeColor = BadgeColors[dataTypeOnBadge];
 
 			if (valueToShow === 'Total Value') {
 				badgeTextValue = totalValue;
@@ -102,12 +99,86 @@ const setBadge = (stateData, dailyData) => {
 	});
 };
 
+const storeDefaultTheme = () => {
+	chrome.storage.local.get(['Theme'], function (response) {
+		if (response.Theme === void 0) {
+			chrome.storage.local.set({ Theme: 'light' }, () => {
+				console.log('Default theme stored in Local Storage');
+			});
+		}
+	});
+};
+
+const storeDefaultSettings = () => {
+	chrome.storage.local.get(['Settings'], function (response) {
+		if (response.Settings === void 0) {
+			const defaultSettings = {
+				DefaultState: 'All States',
+				DataTypeOnBadge: 'Confirmed',
+				ValueToShow: 'Total Value',
+				DefaultColumnToSort: 'Confirmed',
+				DefaultSortType: 'Descending',
+				DefaultGraphDuration: 'Two Weeks',
+			};
+			chrome.storage.local.set({ Settings: defaultSettings }, () => {
+				console.log('Default Settings stored in Local Storage');
+			});
+		}
+	});
+};
+
+// Main Start
+
+// Creating Alarm
+chrome.alarms.create('FetchData', {
+	delayInMinutes: 5,
+	periodInMinutes: 5,
+});
+
+// Setting default color of text over icon
+chrome.browserAction.setBadgeBackgroundColor({ color: '#e40021' });
+
+storeDefaultTheme();
+storeDefaultSettings();
+fetchData();
+// Fetch Data Every 5 Min on alarm
+chrome.alarms.onAlarm.addListener(function (alarm) {
+	if (alarm.name === 'FetchData') {
+		fetchData();
+	}
+});
+
+// Change Badge When Badge Settings Change same time
+chrome.storage.onChanged.addListener((changes, namespace) => {
+	for (let key in changes) {
+		if (key === 'Settings') {
+			const storageChange = changes[key];
+			const oldValue = storageChange.oldValue;
+			const newValue = storageChange.newValue;
+			if (
+				oldValue.DefaultState !== newValue.DefaultState ||
+				oldValue.DataTypeOnBadge !== newValue.DataTypeOnBadge ||
+				oldValue.ValueToShow !== newValue.ValueToShow
+			) {
+				chrome.storage.local.get(['StateData', 'DailyData'], function (response) {
+					const stateData = response.StateData;
+					const dailyData = response.DailyData;
+					setBadge(stateData, dailyData);
+				});
+			}
+		}
+	}
+});
+
+// Main End
+
+// Util Functions
 const kFormat = (value) => {
 	let valStr = '0';
 
 	if (parseInt(value) >= 0) {
 		valStr =
-			parseInt(value) > 999
+			parseInt(value) > 9999
 				? (parseInt(value) / 1000 - Math.floor(parseInt(value) / 1000) < 0.5
 						? Math.floor(parseInt(value) / 1000)
 						: Math.ceil(parseInt(value) / 1000)) + 'k'
@@ -169,51 +240,12 @@ const getMonthStr = (month) => {
 	}
 };
 
-const storeDefaultTheme = () => {
-	chrome.storage.local.get(['Theme'], function (response) {
-		if (response.Theme === void 0) {
-			chrome.storage.local.set({ Theme: 'light' }, () => {
-				console.log('Default theme stored in Local Storage');
-			});
-		}
-	});
+// Constants
+const BadgeColors = {
+	Confirmed: '#e40021',
+	Recovered: '#0eb97f',
+	Deaths: '#ffa800',
 };
-
-const storeDefaultSettings = () => {
-	chrome.storage.local.get(['Settings'], function (response) {
-		if (response.Settings === void 0) {
-			const defaultSettings = {
-				DefaultState: 'All States',
-				DataTypeOnBadge: 'Confirmed',
-				ValueToShow: 'Total Value',
-				DefaultColumnToSort: 'Confirmed',
-				DefaultSortType: 'Descending',
-				DefaultGraphDuration: 'Two Weeks',
-			};
-			chrome.storage.local.set({ Settings: defaultSettings }, () => {
-				console.log('Default Settings stored in Local Storage');
-			});
-		}
-	});
-};
-
-// Creating Alarm
-chrome.alarms.create('FetchData', {
-	delayInMinutes: 5,
-	periodInMinutes: 5,
-});
-
-// Setting color of text over icon
-chrome.browserAction.setBadgeBackgroundColor({ color: '#e40021' });
-
-storeDefaultTheme();
-storeDefaultSettings();
-fetchData();
-chrome.alarms.onAlarm.addListener(function (alarm) {
-	if (alarm.name === 'FetchData') {
-		fetchData();
-	}
-});
 
 const StateList = {
 	stateList: [
