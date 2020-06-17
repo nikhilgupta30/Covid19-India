@@ -90,6 +90,8 @@ const setBadge = (stateData, dailyData) => {
 			}
 
 			chrome.browserAction.setBadgeText({ text: kFormat(badgeTextValue) });
+		} else {
+			chrome.browserAction.setBadgeText({ text: kFormat(confirmed) });
 		}
 	});
 };
