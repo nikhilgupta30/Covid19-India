@@ -73,6 +73,11 @@ const setBadge = (stateData, dailyData) => {
 			let totalValue = 0;
 			totalValue = parseInt(selectedState[dataTypeOnBadge.toLowerCase()]);
 
+			let badgeColor = '#e40021';
+			if (dataTypeOnBadge === 'Confirmed') badgeColor = '#e40021';
+			else if (dataTypeOnBadge === 'Recovered') badgeColor = '#0eb97f';
+			else badgeColor = '#ffa800';
+
 			if (valueToShow === 'Total Value') {
 				badgeTextValue = totalValue;
 			} else {
@@ -89,6 +94,7 @@ const setBadge = (stateData, dailyData) => {
 				badgeTextValue = totalValue - prevValue;
 			}
 
+			chrome.browserAction.setBadgeBackgroundColor({ color: badgeColor });
 			chrome.browserAction.setBadgeText({ text: kFormat(badgeTextValue) });
 		} else {
 			chrome.browserAction.setBadgeText({ text: kFormat(confirmed) });
