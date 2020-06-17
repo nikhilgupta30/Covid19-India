@@ -105,6 +105,7 @@ class App extends Component {
 
 	onMenuClick(mainBarOption) {
 		this.setState({ mainBarType: mainBarOption });
+		window.scrollTo(0, 0);
 	}
 
 	render() {
