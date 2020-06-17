@@ -37,7 +37,7 @@ class Settings extends Component {
 		const self = this;
 		setTimeout(function () {
 			self.setState({ showNotification: false });
-		}, 3000);
+		}, 2000);
 	}
 
 	handleChange(event) {
@@ -141,10 +141,7 @@ class Settings extends Component {
 		);
 
 		const Notification = this.state.showNotification ? (
-			<div style={{ zIndex: '1', left: '5%', position: 'fixed', width: '500px', margin: '20px' }} className='alert alert-success alert-dismissible'>
-				<a href='/#' className='close' data-dismiss='alert' aria-label='close'>
-					&times;
-				</a>
+			<div style={{ zIndex: '1', left: '5%', position: 'fixed', width: '500px', margin: '20px' }} className='alert alert-success'>
 				<strong>Success!</strong> Settings Saved
 			</div>
 		) : (
