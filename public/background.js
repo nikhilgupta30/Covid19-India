@@ -155,16 +155,18 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 			const storageChange = changes[key];
 			const oldValue = storageChange.oldValue;
 			const newValue = storageChange.newValue;
-			if (
-				oldValue.DefaultState !== newValue.DefaultState ||
-				oldValue.DataTypeOnBadge !== newValue.DataTypeOnBadge ||
-				oldValue.ValueToShow !== newValue.ValueToShow
-			) {
-				chrome.storage.local.get(['StateData', 'DailyData'], function (response) {
-					const stateData = response.StateData;
-					const dailyData = response.DailyData;
-					setBadge(stateData, dailyData);
-				});
+			if (oldValue) {
+				if (
+					oldValue.DefaultState !== newValue.DefaultState ||
+					oldValue.DataTypeOnBadge !== newValue.DataTypeOnBadge ||
+					oldValue.ValueToShow !== newValue.ValueToShow
+				) {
+					chrome.storage.local.get(['StateData', 'DailyData'], function (response) {
+						const stateData = response.StateData;
+						const dailyData = response.DailyData;
+						setBadge(stateData, dailyData);
+					});
+				}
 			}
 		}
 	}
