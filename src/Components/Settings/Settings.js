@@ -14,6 +14,7 @@ class Settings extends Component {
 
 		this.state = {
 			settings: {},
+			showNotification: false,
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,8 +30,14 @@ class Settings extends Component {
 	}
 
 	handleSubmit(event) {
+		console.log('handlesubmit');
 		event.preventDefault();
 		this.props.saveSettings(this.state.settings);
+		this.setState({ showNotification: true });
+		const self = this;
+		setTimeout(function () {
+			self.setState({ showNotification: false });
+		}, 3000);
 	}
 
 	handleChange(event) {
@@ -133,8 +140,20 @@ class Settings extends Component {
 			</div>
 		);
 
+		const Notification = this.state.showNotification ? (
+			<div style={{ zIndex: '1', left: '5%', position: 'fixed', width: '500px', margin: '20px' }} className='alert alert-success alert-dismissible'>
+				<a href='/#' className='close' data-dismiss='alert' aria-label='close'>
+					&times;
+				</a>
+				<strong>Success!</strong> Settings Saved
+			</div>
+		) : (
+			''
+		);
+
 		return (
 			<div>
+				{Notification}
 				<div
 					style={{
 						width: '600px',
@@ -145,14 +164,14 @@ class Settings extends Component {
 						textAlign: 'center',
 						backgroundColor: this.context.theme === constants.LIGHTTHEME ? '#ffffff' : '#343a40',
 					}}>
-					<form onSubmit={this.handleSubmit}>
-						<p style={{ fontSize: '24px', fontWeight: 'bold', color: headerColor }}>Settings</p>
-						<div style={{ paddingBottom: '20px' }}>
-							{selectStateDropDown}
-							<div style={{ width: '100%', color: textColor, fontSize: '12px', fontStyle: 'Italic', textAlign: 'right', marginTop: '5px' }}>
-								* Default State for Badge and Graph
-							</div>
+					<p style={{ fontSize: '24px', fontWeight: 'bold', color: headerColor }}>Settings</p>
+					<div style={{ paddingBottom: '20px' }}>
+						{selectStateDropDown}
+						<div style={{ width: '100%', color: textColor, fontSize: '12px', fontStyle: 'Italic', textAlign: 'right', marginTop: '5px' }}>
+							* Default State for Badge and Graph
 						</div>
+					</div>
+					<form onSubmit={this.handleSubmit}>
 						{BadgeSettings}
 						{TableSettings}
 						{GraphSettings}
